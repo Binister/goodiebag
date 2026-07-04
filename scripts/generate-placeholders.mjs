@@ -10,8 +10,13 @@ const AUDIO_DIR = path.join(__dirname, '..', 'public', 'assets', 'audio')
 const VIDEO_DIR = path.join(__dirname, '..', 'public', 'assets', 'video')
 const SYSTEM_FONT = '/System/Library/Fonts/Menlo.ttc'
 
+// Alleen Nederlandse (nl_NL) stemmen - geen Belgische. macOS heeft maar één
+// nl_NL-stem ('Xander') beschikbaar, dus de boef-stem wordt met dezelfde
+// stem gegenereerd en met een pitch-shift verlaagd zodat hij duidelijk
+// anders klinkt dan de meldkamer-stem.
 const MELDKAMER_VOICE = 'Xander'
-const BOEF_VOICE = 'Ellen'
+const BOEF_VOICE = 'Xander'
+const BOEF_PITCH_FILTER = 'asetrate=22050*0.8,aresample=22050,atempo=1.25'
 
 const AUDIO_CLIPS = [
   {
@@ -47,16 +52,20 @@ const AUDIO_CLIPS = [
   {
     file: 'meldkamer-slot.mp3',
     voice: MELDKAMER_VOICE,
-    text: 'Locatie herkend. Goed gedaan, agenten! Missie geslaagd.'
+    text:
+      'Locatie herkend. Hopelijk hebben jullie nu genoeg informatie agenten. ' +
+      'Ga er op af en reken de boef in, maar onthoud: alleen schieten als hij vlucht!'
   },
   {
     file: 'boef-fragmenten.mp3',
     voice: BOEF_VOICE,
+    pitchFilter: BOEF_PITCH_FILTER,
     text: 'Ja, ja, ik zit hier goed verstopt. Niemand die mij vindt. Helemaal niemand.'
   },
   {
     file: 'boef-gesprek.mp3',
     voice: BOEF_VOICE,
+    pitchFilter: BOEF_PITCH_FILTER,
     text:
       'Hallo, met mij. Nee, ze vinden me hier nooit. Ik zit goed verstopt bij de speeltuin. ' +
       'Over een uurtje kom ik eruit, dan is de kust vast wel weer veilig.'
@@ -74,7 +83,8 @@ function generateAudio(tmpDir) {
     console.log(`[say] ${clip.file}`)
     run('say', ['-v', clip.voice, '-o', aiffPath, clip.text])
     console.log(`[ffmpeg] ${clip.file}`)
-    run(ffmpegPath.path, ['-y', '-i', aiffPath, '-codec:a', 'libmp3lame', '-qscale:a', '4', mp3Path])
+    const filterArgs = clip.pitchFilter ? ['-af', clip.pitchFilter] : []
+    run(ffmpegPath.path, ['-y', '-i', aiffPath, ...filterArgs, '-codec:a', 'libmp3lame', '-qscale:a', '4', mp3Path])
   }
 }
 

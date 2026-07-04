@@ -17,7 +17,7 @@ const wakeLock = useWakeLock()
 
 const state = reactive({
   screen: 0,
-  scannerArmed: false,
+  scannerArmed: true,
   agentCount: 0
 })
 
@@ -29,7 +29,7 @@ function goPrev() {
 }
 function reset() {
   state.screen = 0
-  state.scannerArmed = false
+  state.scannerArmed = true
   state.agentCount = 0
 }
 function armScanner() {
