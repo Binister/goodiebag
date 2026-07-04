@@ -38,7 +38,7 @@ video als mp4 portret 9:16, <20MB):
 - [ ] `public/assets/audio/meldkamer-goed-nummer.mp3` — "nummer gevonden, apparatuur wordt gekoppeld"
 - [ ] `public/assets/audio/meldkamer-frequentie.mp3` — instructie frequentiepuzzel
 - [ ] `public/assets/audio/meldkamer-hack.mp3` — "we zijn binnen, live beeld..."
-- [ ] `public/assets/audio/meldkamer-slot.mp3` — "alle agenten: naar de speeltuin!"
+- [ ] `public/assets/audio/meldkamer-slot.mp3` — "locatie herkend, ga erop af..."
 - [ ] `public/assets/audio/boef-fragmenten.mp3` — loopende stem-knipsels voor de puzzel
 - [ ] `public/assets/audio/boef-gesprek.mp3` — het volledige afgeluisterde gesprek
 - [ ] `public/assets/video/boef-live.mp4` — 15-30 sec, portret 9:16, H.264, <20MB
@@ -68,8 +68,9 @@ automatisch bij elke push naar `main`. De app komt op
 - [ ] Eerste tik op AANMELDEN unlockt audio; video start betrouwbaar via de hack-knop.
 - [ ] Scherm gaat niet op slot tijdens gebruik (Wake Lock).
 - [ ] Pinch-zoom, dubbeltik-zoom en pull-to-refresh zijn geblokkeerd.
-- [ ] Vingerafdrukscanner registreert alléén na de arm-gesture (dubbeltik
-      rechtsonder) van de ouder.
+- [ ] Vingerafdrukscanner werkt meteen voor het eerste kind; gaat daarna op
+      slot en vereist de arm-gesture (dubbeltik rechtsonder) van de ouder
+      voor elk volgend kind.
 - [ ] Verborgen oudercontrols werken: 3× tik rechtsboven (volgende), 3× tik
       linksboven (vorige), 3 sec indrukken linksonder (reset).
 
@@ -77,7 +78,9 @@ automatisch bij elke push naar `main`. De app komt op
 
 Onzichtbare hit-areas (~80×80px) in de hoeken van het scherm:
 
-- Dubbeltik rechtsonder → arm de vingerafdrukscanner (alleen scherm 1)
+- Dubbeltik rechtsonder → arm de vingerafdrukscanner voor het volgende kind
+  (scanner werkt voor het eerste kind meteen, en gaat na elke geslaagde
+  scan weer op slot)
 - 3× tik rechtsboven → volgende scherm (skip)
 - 3× tik linksboven → vorig scherm
 - Lang indrukken (3 sec) linksonder → volledige reset
