@@ -1,0 +1,102 @@
+:root {
+  --bg: #0b1d26;
+  --bg-alt: #122a38;
+  --signal-green: #29ff8c;
+  --police-blue: #2b6fff;
+  --error-red: #ff3b3b;
+  --text: #d8f5e8;
+  --font-mono: 'SF Mono', 'Menlo', 'Consolas', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overscroll-behavior: none;
+  touch-action: none;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+button {
+  font-family: var(--font-mono);
+  cursor: pointer;
+  border: none;
+  touch-action: manipulation;
+}
+
+input {
+  font-family: var(--font-mono);
+  touch-action: manipulation;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.screen-title {
+  font-size: 1.4rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--police-blue);
+}
+
+.big-button {
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  padding: 1.5rem 2.5rem;
+  min-width: 80px;
+  min-height: 80px;
+  border-radius: 1rem;
+  background: var(--police-blue);
+  color: white;
+  box-shadow: 0 0 24px rgba(43, 111, 255, 0.5);
+}
+
+.big-button.active {
+  background: var(--signal-green);
+  color: var(--bg);
+  box-shadow: 0 0 24px rgba(41, 255, 140, 0.6);
+}
+
+.flash-green {
+  animation: flashGreen 0.4s ease-out;
+}
+
+.flash-red {
+  animation: flashRed 0.4s ease-out;
+}
+
+@keyframes flashGreen {
+  0% { background: var(--signal-green); }
+  100% { background: var(--bg); }
+}
+
+@keyframes flashRed {
+  0% { background: var(--error-red); }
+  100% { background: var(--bg); }
+}
