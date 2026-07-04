@@ -88,6 +88,10 @@ const groups = computed(() => {
 </template>
 
 <style scoped>
+.phone-screen {
+  justify-content: flex-start;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 3rem);
+}
 .digit-card {
   max-width: 100%;
 }
