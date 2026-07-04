@@ -1,5 +1,6 @@
 <script setup>
 import { inject, ref } from 'vue'
+import fingerprintSvg from '../assets/fingerprint.svg?raw'
 
 const flow = inject('flow')
 const audio = inject('audio')
@@ -62,16 +63,8 @@ function completeScan() {
       @pointerleave="cancelScan"
       @pointercancel="cancelScan"
     >
-      <svg viewBox="0 0 100 120" width="150" height="180">
-        <g fill="none" stroke="currentColor" stroke-width="4">
-          <rect x="18" y="8" width="64" height="104" rx="32" />
-          <rect x="24" y="16" width="52" height="88" rx="26" />
-          <rect x="30" y="24" width="40" height="72" rx="20" />
-          <rect x="36" y="32" width="28" height="56" rx="14" />
-          <rect x="42" y="40" width="16" height="40" rx="8" />
-        </g>
-        <rect class="scan-line" x="18" :y="10 + progress * 98" width="64" height="3" rx="1.5" fill="var(--success)" />
-      </svg>
+      <div class="fingerprint-svg" v-html="fingerprintSvg"></div>
+      <div class="scan-line" :style="{ top: `${4 + progress * 92}%` }"></div>
       <div v-if="justSucceeded" class="checkmark">✓</div>
     </div>
     <div class="status-text" :class="{ ready: flow.state.scannerArmed || justSucceeded }">
@@ -101,6 +94,22 @@ function completeScan() {
 .fingerprint-icon.scanning,
 .fingerprint-icon.success {
   color: var(--success);
+}
+.fingerprint-svg {
+  width: 160px;
+}
+.fingerprint-svg :deep(svg) {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.scan-line {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--success);
 }
 .checkmark {
   position: absolute;
