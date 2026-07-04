@@ -52,7 +52,8 @@ function completeScan() {
 
 <template>
   <div class="screen fingerprint-screen">
-    <div class="screen-title">Agenten: {{ flow.state.agentCount }}</div>
+    <div class="screen-eyebrow">Agenten: {{ flow.state.agentCount }}</div>
+    <h1 class="screen-title">Vingerafdrukscan</h1>
     <div
       class="fingerprint-icon"
       :class="{ armed: flow.state.scannerArmed, scanning, success: justSucceeded }"
@@ -72,13 +73,13 @@ function completeScan() {
       </svg>
       <div v-if="justSucceeded" class="checkmark">✓</div>
     </div>
-    <div class="status-text">
+    <div class="status-text" :class="{ ready: flow.state.scannerArmed || justSucceeded }">
       {{
         justSucceeded
-          ? 'AGENT GEREGISTREERD'
+          ? 'Agent geregistreerd'
           : flow.state.scannerArmed
-            ? 'PLAATS DUIM OP SCANNER'
-            : 'WACHTEN OP MELDKAMER...'
+            ? 'Plaats duim op scanner'
+            : 'Wachten op meldkamer...'
       }}
     </div>
   </div>
@@ -110,8 +111,14 @@ function completeScan() {
   color: var(--signal-green);
 }
 .status-text {
-  font-size: 1.1rem;
-  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   min-height: 1.5em;
+}
+.status-text.ready {
+  color: var(--signal-green);
 }
 </style>

@@ -44,28 +44,28 @@ function replayVideo() {
 <template>
   <div class="screen interception-screen">
     <template v-if="phase === 'A'">
-      <div class="screen-title">VERBINDING ONDERSCHEPT</div>
+      <h1 class="screen-title">Verbinding onderschept</h1>
       <div class="waveform">
         <span v-for="n in 12" :key="n" class="bar" :style="{ animationDelay: `${n * 0.07}s` }"></span>
       </div>
-      <button class="big-button" @click="replayGesprek">↻ OPNIEUW AFSPELEN</button>
-      <button class="big-button active" @click="startHack">📹 CAMERA VERDACHTE HACKEN</button>
+      <button class="big-button" @click="replayGesprek">↻ Opnieuw afspelen</button>
+      <button class="big-button active" @click="startHack">📹 Camera verdachte hacken</button>
     </template>
     <template v-else>
-      <div v-if="!showVideo" class="screen-title">VERBINDING MAKEN MET CAMERA...</div>
+      <h1 v-if="!showVideo" class="screen-title">Verbinding maken met camera...</h1>
       <div v-else class="video-wrap">
         <video ref="videoRef" :src="videoSrc" playsinline @ended="onVideoEnded"></video>
         <div class="overlay">
           <div class="rec-dot"><span class="dot"></span> LIVE</div>
-          <div class="cam-label">CAM VERDACHTE — VERBONDEN</div>
+          <div class="cam-label">Cam verdachte — verbonden</div>
           <div class="signal-bars-small">
             <span v-for="n in 3" :key="n" class="bar"></span>
           </div>
           <div class="battery">🔋</div>
         </div>
         <div v-if="videoDone" class="result-overlay">
-          <div class="screen-title">LOCATIE HERKEND</div>
-          <button class="big-button" @click="replayVideo">↻ OPNIEUW AFSPELEN</button>
+          <h1 class="screen-title">Locatie herkend</h1>
+          <button class="big-button" @click="replayVideo">↻ Opnieuw afspelen</button>
         </div>
       </div>
     </template>
@@ -113,7 +113,10 @@ function replayVideo() {
   flex-direction: column;
   justify-content: space-between;
   color: var(--signal-green);
-  font-size: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   pointer-events: none;
 }
 .rec-dot {

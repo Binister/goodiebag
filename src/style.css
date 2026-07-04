@@ -1,10 +1,15 @@
 :root {
-  --bg: #0b1d26;
-  --bg-alt: #122a38;
+  --bg: #0a1628;
+  --bg-alt: #142c4d;
+  --card-light: #f3f6fb;
+  --text-on-light: #10233f;
   --signal-green: #29ff8c;
-  --police-blue: #2b6fff;
-  --error-red: #ff3b3b;
-  --text: #d8f5e8;
+  --police-blue: #2f6fd6;
+  --police-blue-dark: #17417e;
+  --error-red: #ff4a4a;
+  --text: #eef2f8;
+  --text-muted: #9fb3cc;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'SF Mono', 'Menlo', 'Consolas', monospace;
 }
 
@@ -22,7 +27,7 @@ body {
   touch-action: none;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -32,10 +37,11 @@ body {
   position: fixed;
   inset: 0;
   overflow: hidden;
+  background: radial-gradient(ellipse 120% 80% at 50% 0%, var(--bg-alt) 0%, var(--bg) 60%);
 }
 
 button {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   cursor: pointer;
   border: none;
   touch-action: manipulation;
@@ -59,28 +65,49 @@ input {
 }
 
 .screen-title {
-  font-size: 1.4rem;
-  letter-spacing: 0.15em;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+
+.screen-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--police-blue);
+  color: var(--signal-green);
+}
+
+.card {
+  background: var(--card-light);
+  color: var(--text-on-light);
+  border-radius: 1.1rem;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 .big-button {
-  font-size: 1.5rem;
-  letter-spacing: 0.1em;
-  padding: 1.5rem 2.5rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: 1.3rem 2.2rem;
   min-width: 80px;
   min-height: 80px;
   border-radius: 1rem;
   background: var(--police-blue);
   color: white;
-  box-shadow: 0 0 24px rgba(43, 111, 255, 0.5);
+  box-shadow:
+    0 8px 20px rgba(10, 22, 40, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
 }
 
 .big-button.active {
   background: var(--signal-green);
-  color: var(--bg);
-  box-shadow: 0 0 24px rgba(41, 255, 140, 0.6);
+  color: var(--text-on-light);
+  box-shadow:
+    0 8px 24px rgba(41, 255, 140, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
 }
 
 .flash-green {
@@ -92,11 +119,19 @@ input {
 }
 
 @keyframes flashGreen {
-  0% { background: var(--signal-green); }
-  100% { background: var(--bg); }
+  0% {
+    background: var(--signal-green);
+  }
+  100% {
+    background: var(--bg);
+  }
 }
 
 @keyframes flashRed {
-  0% { background: var(--error-red); }
-  100% { background: var(--bg); }
+  0% {
+    background: var(--error-red);
+  }
+  100% {
+    background: var(--bg);
+  }
 }

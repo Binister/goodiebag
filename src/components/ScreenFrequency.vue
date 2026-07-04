@@ -70,7 +70,7 @@ function lockSignal() {
 
 <template>
   <div class="screen frequency-screen">
-    <div class="screen-title">{{ locked ? 'SIGNAAL VERGRENDELD' : 'ZOEK DE FREQUENTIE' }}</div>
+    <h1 class="screen-title">{{ locked ? 'Signaal vergrendeld' : 'Zoek de frequentie' }}</h1>
     <div class="signal-bars">
       <span v-for="n in 3" :key="n" class="bar" :class="{ lit: n <= barsLit }"></span>
     </div>
