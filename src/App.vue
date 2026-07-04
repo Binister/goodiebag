@@ -1,6 +1,7 @@
 <script setup>
 import { reactive, provide, computed } from 'vue'
 import HiddenControls from './components/HiddenControls.vue'
+import PoliceBadge from './components/PoliceBadge.vue'
 import ScreenStart from './components/ScreenStart.vue'
 import ScreenFingerprint from './components/ScreenFingerprint.vue'
 import ScreenPhoneNumber from './components/ScreenPhoneNumber.vue'
@@ -58,6 +59,7 @@ const currentScreen = computed(() => SCREENS[state.screen])
 <template>
   <div class="app-root">
     <component :is="currentScreen" />
+    <PoliceBadge />
     <HiddenControls
       :arm-enabled="state.screen === 1"
       @arm="armScanner"
