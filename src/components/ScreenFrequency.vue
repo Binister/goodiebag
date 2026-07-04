@@ -102,7 +102,7 @@ function lockSignal() {
   height: 2.5rem;
   background: var(--bg-elevated);
   border-radius: 0.3rem;
-  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1.5px rgba(11, 31, 51, 0.12);
 }
 .bar.lit {
   background: var(--success);

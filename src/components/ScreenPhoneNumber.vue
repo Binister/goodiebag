@@ -103,8 +103,8 @@ const groups = computed(() => {
 .digit-box {
   width: 6.5vw;
   height: 8.5vw;
-  background: #e9edf6;
-  box-shadow: inset 0 0 0 1px rgba(16, 24, 42, 0.08);
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1.5px rgba(11, 31, 51, 0.15);
   border-radius: 0.55rem;
   display: flex;
   align-items: center;
