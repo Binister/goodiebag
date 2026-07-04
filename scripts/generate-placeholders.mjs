@@ -11,7 +11,7 @@ const VIDEO_DIR = path.join(__dirname, '..', 'public', 'assets', 'video')
 const SYSTEM_FONT = '/System/Library/Fonts/Menlo.ttc'
 
 const MELDKAMER_VOICE = 'Xander'
-const BOEF_VOICE = 'Ralph'
+const BOEF_VOICE = 'Ellen'
 
 const AUDIO_CLIPS = [
   {
@@ -47,7 +47,7 @@ const AUDIO_CLIPS = [
   {
     file: 'meldkamer-slot.mp3',
     voice: MELDKAMER_VOICE,
-    text: 'Locatie herkend. Alle agenten: naar de speeltuin!'
+    text: 'Locatie herkend. Goed gedaan, agenten! Missie geslaagd.'
   },
   {
     file: 'boef-fragmenten.mp3',

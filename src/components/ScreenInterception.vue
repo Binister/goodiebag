@@ -97,6 +97,7 @@ function replayVideo() {
 .video-wrap {
   position: fixed;
   inset: 0;
+  z-index: 50;
   background: black;
 }
 .video-wrap video {
