@@ -86,37 +86,37 @@ export function useAudioEngine() {
     }
   }
 
-  function startCrossfade() {
-    const noiseSource = ctx.createBufferSource()
-    noiseSource.buffer = noiseBuffer
-    noiseSource.loop = true
-    const noiseGain = ctx.createGain()
-    noiseSource.connect(noiseGain).connect(ctx.destination)
-    noiseSource.start()
+  function playLoop(buffer, initialGain = 1) {
+    const source = ctx.createBufferSource()
+    source.buffer = buffer
+    source.loop = true
+    const gain = ctx.createGain()
+    gain.gain.value = initialGain
+    source.connect(gain).connect(ctx.destination)
+    source.start()
 
-    const boefSource = ctx.createBufferSource()
-    boefSource.buffer = buffers.boefFragmenten
-    boefSource.loop = true
-    const boefGain = ctx.createGain()
-    boefSource.connect(boefGain).connect(ctx.destination)
-    boefSource.start()
-
-    noiseGain.gain.value = 1
-    boefGain.gain.value = 0
-
-    function setMix(targetSignal) {
-      const t = Math.min(Math.max(targetSignal, 0), 1)
-      noiseGain.gain.value = 1 - t
-      boefGain.gain.value = t
+    function setGain(value, rampSeconds = 0) {
+      if (rampSeconds > 0) {
+        gain.gain.linearRampToValueAtTime(value, ctx.currentTime + rampSeconds)
+      } else {
+        gain.gain.value = value
+      }
     }
 
     function stop() {
-      noiseSource.stop()
-      boefSource.stop()
+      source.stop()
     }
 
-    return { setMix, stop }
+    return { setGain, stop }
   }
 
-  return { ready, unlock, play, stopAll, beep, playAscendingBeeps, startCrossfade }
+  function playNoiseLoop() {
+    return playLoop(noiseBuffer, 1)
+  }
+
+  function playBoefLoop() {
+    return playLoop(buffers.boefFragmenten, 0)
+  }
+
+  return { ready, unlock, play, stopAll, beep, playAscendingBeeps, playNoiseLoop, playBoefLoop }
 }

@@ -62,14 +62,15 @@ function completeScan() {
       @pointerleave="cancelScan"
       @pointercancel="cancelScan"
     >
-      <svg viewBox="0 0 100 100" width="180" height="180">
-        <g fill="none" stroke="currentColor" stroke-width="4">
-          <ellipse cx="50" cy="55" rx="35" ry="40" />
-          <ellipse cx="50" cy="55" rx="26" ry="31" />
-          <ellipse cx="50" cy="55" rx="17" ry="22" />
-          <ellipse cx="50" cy="55" rx="8" ry="13" />
+      <svg viewBox="0 0 100 100" width="170" height="170">
+        <g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round">
+          <path d="M14,84 A36,48 0 0 1 86,84" />
+          <path d="M21,84 A29,40 0 0 1 79,84" />
+          <path d="M28,84 A22,32 0 0 1 72,84" />
+          <path d="M35,84 A15,24 0 0 1 65,84" />
+          <path d="M42,84 A8,14 0 0 1 58,84" />
         </g>
-        <rect class="scan-line" x="10" :y="15 + progress * 80" width="80" height="3" fill="var(--signal-green)" />
+        <rect class="scan-line" x="10" :y="36 + progress * 48" width="80" height="3" rx="1.5" fill="var(--success)" />
       </svg>
       <div v-if="justSucceeded" class="checkmark">✓</div>
     </div>
@@ -99,7 +100,7 @@ function completeScan() {
 }
 .fingerprint-icon.scanning,
 .fingerprint-icon.success {
-  color: var(--signal-green);
+  color: var(--success);
 }
 .checkmark {
   position: absolute;
@@ -107,18 +108,17 @@ function completeScan() {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 4rem;
-  color: var(--signal-green);
+  font-size: 3.5rem;
+  font-weight: 600;
+  color: var(--success);
 }
 .status-text {
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  font-size: 1rem;
+  color: var(--text-secondary);
   min-height: 1.5em;
 }
 .status-text.ready {
-  color: var(--signal-green);
+  color: var(--text);
+  font-weight: 600;
 }
 </style>

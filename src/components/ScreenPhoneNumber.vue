@@ -103,22 +103,21 @@ const groups = computed(() => {
 .digit-box {
   width: 6.5vw;
   height: 8.5vw;
-  border: 2px solid var(--police-blue-dark);
-  border-radius: 0.4rem;
+  background: #e9edf6;
+  box-shadow: inset 0 0 0 1px rgba(16, 24, 42, 0.08);
+  border-radius: 0.55rem;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
   font-size: 3.8vw;
-  font-weight: bold;
+  font-weight: 600;
   flex-shrink: 0;
 }
 .connecting-text {
-  font-family: var(--font-mono);
-  font-size: 1.1rem;
-  color: var(--signal-green);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
 }
 .tel-input {
   position: absolute;

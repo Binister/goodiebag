@@ -1,16 +1,21 @@
 :root {
-  --bg: #0a1628;
-  --bg-alt: #142c4d;
-  --card-light: #f3f6fb;
-  --text-on-light: #10233f;
-  --signal-green: #29ff8c;
-  --police-blue: #2f6fd6;
-  --police-blue-dark: #17417e;
-  --error-red: #ff4a4a;
-  --text: #eef2f8;
-  --text-muted: #9fb3cc;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  --bg: #0b0e14;
+  --bg-elevated: #161a24;
+  --bg-elevated-2: #1f2430;
+  --card-light: #f5f6f8;
+  --text-on-light: #10182a;
+  --police-blue: #0a84ff;
+  --police-blue-tint: rgba(10, 132, 255, 0.16);
+  --success: #30d158;
+  --error-red: #ff453a;
+  --text: #f5f6f8;
+  --text-secondary: #9a9aa8;
+  --text-muted: #6c6c76;
+  --hud: #6ea8ff;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
 }
 
 * {
@@ -37,7 +42,7 @@ body {
   position: fixed;
   inset: 0;
   overflow: hidden;
-  background: radial-gradient(ellipse 120% 80% at 50% 0%, var(--bg-alt) 0%, var(--bg) 60%);
+  background: var(--bg);
 }
 
 button {
@@ -59,55 +64,62 @@ input {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.75rem;
   padding: 2rem;
   text-align: center;
 }
 
 .screen-title {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: 700;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
   color: var(--text);
 }
 
 .screen-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--signal-green);
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
 }
 
 .card {
   background: var(--card-light);
   color: var(--text-on-light);
-  border-radius: 1.1rem;
+  border-radius: var(--radius-lg);
   padding: 1.25rem 1.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .big-button {
   font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 1.2rem;
-  padding: 1.3rem 2.2rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 1.2rem 2.2rem;
   min-width: 80px;
   min-height: 80px;
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
   background: var(--police-blue);
   color: white;
-  box-shadow:
-    0 8px 20px rgba(10, 22, 40, 0.45),
-    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.big-button.active {
-  background: var(--signal-green);
-  color: var(--text-on-light);
-  box-shadow:
-    0 8px 24px rgba(41, 255, 140, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+.big-button.secondary {
+  background: var(--police-blue-tint);
+  color: var(--police-blue);
+  box-shadow: none;
 }
 
 .flash-green {
@@ -120,7 +132,7 @@ input {
 
 @keyframes flashGreen {
   0% {
-    background: var(--signal-green);
+    background: var(--success);
   }
   100% {
     background: var(--bg);

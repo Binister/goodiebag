@@ -48,8 +48,14 @@ function replayVideo() {
       <div class="waveform">
         <span v-for="n in 12" :key="n" class="bar" :style="{ animationDelay: `${n * 0.07}s` }"></span>
       </div>
-      <button class="big-button" @click="replayGesprek">↻ Opnieuw afspelen</button>
-      <button class="big-button active" @click="startHack">📹 Camera verdachte hacken</button>
+      <button class="big-button secondary" @click="replayGesprek">↻ Opnieuw afspelen</button>
+      <button class="big-button" @click="startHack">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7h3l1.5-2h9L18 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z" />
+          <circle cx="12" cy="13" r="3.5" />
+        </svg>
+        Camera verdachte hacken
+      </button>
     </template>
     <template v-else>
       <h1 v-if="!showVideo" class="screen-title">Verbinding maken met camera...</h1>
@@ -61,7 +67,11 @@ function replayVideo() {
           <div class="signal-bars-small">
             <span v-for="n in 3" :key="n" class="bar"></span>
           </div>
-          <div class="battery">🔋</div>
+          <svg class="battery" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="17" height="10" rx="2" />
+            <line x1="22" y1="10" x2="22" y2="14" />
+            <rect x="4.5" y="9.5" width="11" height="5" fill="currentColor" stroke="none" />
+          </svg>
         </div>
         <div v-if="videoDone" class="result-overlay">
           <h1 class="screen-title">Locatie herkend</h1>
@@ -82,7 +92,7 @@ function replayVideo() {
 .waveform .bar {
   width: 0.5rem;
   height: 1rem;
-  background: var(--signal-green);
+  background: var(--police-blue);
   animation: wave 0.9s ease-in-out infinite;
 }
 @keyframes wave {
@@ -112,11 +122,10 @@ function replayVideo() {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: var(--signal-green);
+  color: rgba(255, 255, 255, 0.9);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
   pointer-events: none;
 }
 .rec-dot {
@@ -145,7 +154,7 @@ function replayVideo() {
 .signal-bars-small .bar {
   width: 0.3rem;
   height: 1rem;
-  background: var(--signal-green);
+  background: rgba(255, 255, 255, 0.9);
 }
 .battery {
   align-self: flex-end;
@@ -153,7 +162,7 @@ function replayVideo() {
 .result-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(11, 29, 38, 0.85);
+  background: rgba(11, 14, 20, 0.88);
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -6,12 +6,15 @@ const props = defineProps({
 })
 const emit = defineEmits(['arm', 'next', 'prev', 'reset'])
 
-const { armTap, nextTap, prevTap, resetPress } = useParentControls({
-  onArm: () => props.armEnabled && emit('arm'),
+const { nextTap, prevTap, resetPress } = useParentControls({
   onNext: () => emit('next'),
   onPrev: () => emit('prev'),
   onReset: () => emit('reset')
 })
+
+function handleArmTap() {
+  if (props.armEnabled) emit('arm')
+}
 </script>
 
 <template>
@@ -25,7 +28,7 @@ const { armTap, nextTap, prevTap, resetPress } = useParentControls({
       @pointerleave="resetPress.cancel"
       @pointercancel="resetPress.cancel"
     ></div>
-    <div class="hit-area bottom-right" @pointerdown="armTap"></div>
+    <div class="hit-area bottom-right" @pointerdown="handleArmTap"></div>
   </div>
 </template>
 
@@ -38,24 +41,24 @@ const { armTap, nextTap, prevTap, resetPress } = useParentControls({
 }
 .hit-area {
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 96px;
+  height: 96px;
   pointer-events: auto;
 }
 .top-left {
-  top: 0;
-  left: 0;
+  top: max(8px, env(safe-area-inset-top));
+  left: max(8px, env(safe-area-inset-left));
 }
 .top-right {
-  top: 0;
-  right: 0;
+  top: max(8px, env(safe-area-inset-top));
+  right: max(8px, env(safe-area-inset-right));
 }
 .bottom-left {
-  bottom: 0;
-  left: 0;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  left: max(8px, env(safe-area-inset-left));
 }
 .bottom-right {
-  bottom: 0;
-  right: 0;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  right: max(8px, env(safe-area-inset-right));
 }
 </style>
