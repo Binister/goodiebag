@@ -62,15 +62,15 @@ function completeScan() {
       @pointerleave="cancelScan"
       @pointercancel="cancelScan"
     >
-      <svg viewBox="0 0 100 100" width="170" height="170">
-        <g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round">
-          <path d="M14,84 A36,48 0 0 1 86,84" />
-          <path d="M21,84 A29,40 0 0 1 79,84" />
-          <path d="M28,84 A22,32 0 0 1 72,84" />
-          <path d="M35,84 A15,24 0 0 1 65,84" />
-          <path d="M42,84 A8,14 0 0 1 58,84" />
+      <svg viewBox="0 0 100 120" width="150" height="180">
+        <g fill="none" stroke="currentColor" stroke-width="4">
+          <rect x="18" y="8" width="64" height="104" rx="32" />
+          <rect x="24" y="16" width="52" height="88" rx="26" />
+          <rect x="30" y="24" width="40" height="72" rx="20" />
+          <rect x="36" y="32" width="28" height="56" rx="14" />
+          <rect x="42" y="40" width="16" height="40" rx="8" />
         </g>
-        <rect class="scan-line" x="10" :y="36 + progress * 48" width="80" height="3" rx="1.5" fill="var(--success)" />
+        <rect class="scan-line" x="18" :y="10 + progress * 98" width="64" height="3" rx="1.5" fill="var(--success)" />
       </svg>
       <div v-if="justSucceeded" class="checkmark">✓</div>
     </div>
