@@ -66,13 +66,15 @@ const groups = computed(() => {
 
 <template>
   <div class="screen phone-screen" :class="flash && `flash-${flash}`">
-    <div class="screen-title">Voer nummer in</div>
-    <div v-if="!connecting" class="digit-groups">
-      <div v-for="(group, gi) in groups" :key="gi" class="digit-group">
-        <span v-for="(d, di) in group" :key="di" class="digit-box">{{ d.trim() }}</span>
+    <h1 class="screen-title">Voer het nummer in</h1>
+    <div v-if="!connecting" class="card digit-card">
+      <div class="digit-groups">
+        <div v-for="(group, gi) in groups" :key="gi" class="digit-group">
+          <span v-for="(d, di) in group" :key="di" class="digit-box">{{ d.trim() }}</span>
+        </div>
       </div>
     </div>
-    <div v-else class="connecting-text">AFLUISTERAPPARATUUR WORDT GEKOPPELD</div>
+    <div v-else class="connecting-text">Afluisterapparatuur wordt gekoppeld</div>
     <input
       ref="inputRef"
       class="tel-input"
@@ -86,6 +88,9 @@ const groups = computed(() => {
 </template>
 
 <style scoped>
+.digit-card {
+  max-width: 100%;
+}
 .digit-groups {
   display: flex;
   gap: 1.5vw;
@@ -98,19 +103,21 @@ const groups = computed(() => {
 .digit-box {
   width: 6.5vw;
   height: 8.5vw;
-  border: 2px solid var(--police-blue);
-  border-radius: 0.4rem;
+  background: #e9edf6;
+  box-shadow: inset 0 0 0 1px rgba(16, 24, 42, 0.08);
+  border-radius: 0.55rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-mono);
   font-size: 3.8vw;
-  font-weight: bold;
+  font-weight: 600;
   flex-shrink: 0;
 }
 .connecting-text {
-  font-size: 1.3rem;
-  color: var(--signal-green);
-  letter-spacing: 0.08em;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
 }
 .tel-input {
   position: absolute;

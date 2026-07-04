@@ -6,7 +6,6 @@ const audio = inject('audio')
 
 const SCALE_MIN = 0
 const SCALE_MAX = 1000
-const MAX_DISTANCE = 350
 const HOLD_MS = 1500
 
 const target = ref(300 + Math.random() * 400)
@@ -14,27 +13,28 @@ const zoneHalfWidth = ref(60)
 const value = ref(0)
 const locked = ref(false)
 
-let crossfade = null
+let noiseLoop = null
+let boefLoop = null
 let widenTimer = null
 let holdTimer = null
 let inZone = false
 
 onMounted(() => {
   audio.play('frequentieInstructie')
-  crossfade = audio.startCrossfade()
+  noiseLoop = audio.playNoiseLoop()
   widenTimer = setTimeout(() => {
     zoneHalfWidth.value *= 2
   }, 30000)
 })
 
 onUnmounted(() => {
-  crossfade?.stop()
+  noiseLoop?.stop()
+  boefLoop?.stop()
   if (widenTimer) clearTimeout(widenTimer)
   if (holdTimer) clearTimeout(holdTimer)
 })
 
 const distance = computed(() => Math.abs(value.value - target.value))
-const signalStrength = computed(() => 1 - Math.min(distance.value / MAX_DISTANCE, 1))
 const isInZone = computed(() => distance.value <= zoneHalfWidth.value)
 const barsLit = computed(() => {
   if (!isInZone.value) return 0
@@ -42,24 +42,31 @@ const barsLit = computed(() => {
   return Math.max(1, Math.round(closeness * 3))
 })
 
-watch(value, () => {
-  crossfade?.setMix(signalStrength.value)
-})
-
 watch(isInZone, (nowInZone) => {
   if (locked.value) return
   if (nowInZone && !inZone) {
     inZone = true
+    boefLoop = audio.playBoefLoop()
+    boefLoop.setGain(1, 0.2)
+    noiseLoop?.setGain(0.12, 0.2)
     holdTimer = setTimeout(lockSignal, HOLD_MS)
   } else if (!nowInZone && inZone) {
     inZone = false
     if (holdTimer) clearTimeout(holdTimer)
+    noiseLoop?.setGain(1, 0.2)
+    if (boefLoop) {
+      const toStop = boefLoop
+      toStop.setGain(0, 0.15)
+      setTimeout(() => toStop.stop(), 200)
+      boefLoop = null
+    }
   }
 })
 
 function lockSignal() {
   locked.value = true
-  crossfade?.setMix(1)
+  noiseLoop?.setGain(0, 0.1)
+  boefLoop?.setGain(1)
   audio.beep(1400, 0.3)
   audio.beep(1800, 0.3, 0.15)
   setTimeout(() => {
@@ -70,7 +77,7 @@ function lockSignal() {
 
 <template>
   <div class="screen frequency-screen">
-    <div class="screen-title">{{ locked ? 'SIGNAAL VERGRENDELD' : 'ZOEK DE FREQUENTIE' }}</div>
+    <h1 class="screen-title">{{ locked ? 'Signaal vergrendeld' : 'Zoek de frequentie' }}</h1>
     <div class="signal-bars">
       <span v-for="n in 3" :key="n" class="bar" :class="{ lit: n <= barsLit }"></span>
     </div>
@@ -93,17 +100,17 @@ function lockSignal() {
 .bar {
   width: 1.2rem;
   height: 2.5rem;
-  background: var(--bg-alt);
-  border: 2px solid var(--police-blue);
-  border-radius: 0.2rem;
+  background: var(--bg-elevated);
+  border-radius: 0.3rem;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.1);
 }
 .bar.lit {
-  background: var(--signal-green);
-  border-color: var(--signal-green);
+  background: var(--success);
+  box-shadow: none;
 }
 .frequency-slider {
   width: 90%;
   height: 4rem;
-  accent-color: var(--signal-green);
+  accent-color: var(--police-blue);
 }
 </style>

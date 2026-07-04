@@ -31,11 +31,10 @@ function longPressHandlers(callback, ms = 3000) {
   }
 }
 
-export function useParentControls({ onArm, onNext, onPrev, onReset }) {
-  const armTap = multiTapHandler(2, () => onArm?.())
+export function useParentControls({ onNext, onPrev, onReset }) {
   const nextTap = multiTapHandler(3, () => onNext?.())
   const prevTap = multiTapHandler(3, () => onPrev?.())
   const resetPress = longPressHandlers(() => onReset?.())
 
-  return { armTap, nextTap, prevTap, resetPress }
+  return { nextTap, prevTap, resetPress }
 }

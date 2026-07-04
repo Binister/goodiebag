@@ -44,28 +44,38 @@ function replayVideo() {
 <template>
   <div class="screen interception-screen">
     <template v-if="phase === 'A'">
-      <div class="screen-title">VERBINDING ONDERSCHEPT</div>
+      <h1 class="screen-title">Verbinding onderschept</h1>
       <div class="waveform">
         <span v-for="n in 12" :key="n" class="bar" :style="{ animationDelay: `${n * 0.07}s` }"></span>
       </div>
-      <button class="big-button" @click="replayGesprek">↻ OPNIEUW AFSPELEN</button>
-      <button class="big-button active" @click="startHack">📹 CAMERA VERDACHTE HACKEN</button>
+      <button class="big-button secondary" @click="replayGesprek">↻ Opnieuw afspelen</button>
+      <button class="big-button" @click="startHack">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7h3l1.5-2h9L18 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z" />
+          <circle cx="12" cy="13" r="3.5" />
+        </svg>
+        Camera verdachte hacken
+      </button>
     </template>
     <template v-else>
-      <div v-if="!showVideo" class="screen-title">VERBINDING MAKEN MET CAMERA...</div>
+      <h1 v-if="!showVideo" class="screen-title">Verbinding maken met camera...</h1>
       <div v-else class="video-wrap">
         <video ref="videoRef" :src="videoSrc" playsinline @ended="onVideoEnded"></video>
         <div class="overlay">
           <div class="rec-dot"><span class="dot"></span> LIVE</div>
-          <div class="cam-label">CAM VERDACHTE — VERBONDEN</div>
+          <div class="cam-label">Cam verdachte — verbonden</div>
           <div class="signal-bars-small">
             <span v-for="n in 3" :key="n" class="bar"></span>
           </div>
-          <div class="battery">🔋</div>
+          <svg class="battery" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="17" height="10" rx="2" />
+            <line x1="22" y1="10" x2="22" y2="14" />
+            <rect x="4.5" y="9.5" width="11" height="5" fill="currentColor" stroke="none" />
+          </svg>
         </div>
         <div v-if="videoDone" class="result-overlay">
-          <div class="screen-title">LOCATIE HERKEND</div>
-          <button class="big-button" @click="replayVideo">↻ OPNIEUW AFSPELEN</button>
+          <h1 class="screen-title">Locatie herkend</h1>
+          <button class="big-button" @click="replayVideo">↻ Opnieuw afspelen</button>
         </div>
       </div>
     </template>
@@ -82,7 +92,7 @@ function replayVideo() {
 .waveform .bar {
   width: 0.5rem;
   height: 1rem;
-  background: var(--signal-green);
+  background: var(--police-blue);
   animation: wave 0.9s ease-in-out infinite;
 }
 @keyframes wave {
@@ -112,8 +122,10 @@ function replayVideo() {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: var(--signal-green);
-  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
   pointer-events: none;
 }
 .rec-dot {
@@ -142,7 +154,7 @@ function replayVideo() {
 .signal-bars-small .bar {
   width: 0.3rem;
   height: 1rem;
-  background: var(--signal-green);
+  background: rgba(255, 255, 255, 0.9);
 }
 .battery {
   align-self: flex-end;
@@ -150,7 +162,7 @@ function replayVideo() {
 .result-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(11, 29, 38, 0.85);
+  background: rgba(11, 14, 20, 0.88);
   display: flex;
   flex-direction: column;
   align-items: center;
