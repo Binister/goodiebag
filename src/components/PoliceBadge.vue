@@ -32,6 +32,6 @@
   opacity: 0.9;
 }
 .police-badge svg {
-  fill: #fff;
+  fill: var(--police-blue);
 }
 </style>
