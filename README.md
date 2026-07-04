@@ -1,1 +1,83 @@
-# goodiebag
+# Politie Afluistercentrale
+
+Politiespeurtocht-app voor een kinderfeestje (7 kinderen, 4-6 jaar): de
+kinderen voeren het telefoonnummer van "de boef" in, "luisteren" zijn
+gesprek af en hacken zijn live-camerabeeld om zijn schuilplaats te vinden.
+Eén iPhone, Safari, één ouder bedient onzichtbaar de voortgang. Zie
+[spec-afluister-app.md](spec-afluister-app.md) voor de volledige spec.
+
+Gebouwd met Vue 3 + Vite, offline-first via een service worker
+(vite-plugin-pwa) die alle audio/video precachet.
+
+## Ontwikkelen
+
+```
+npm install
+npm run dev
+```
+
+## Placeholder-assets opnieuw genereren
+
+Alle audio (`public/assets/audio/*.mp3`) en de video
+(`public/assets/video/boef-live.mp4`) zijn nu placeholders: audio via macOS
+`say` (Nederlandse TTS) en video een ffmpeg-testpatroon. Opnieuw genereren
+(macOS met `say` nodig):
+
+```
+npm run gen:placeholders
+```
+
+### Checklist: placeholders vervangen door echte opnames
+
+Vervang onderstaande bestanden 1-op-1 (zelfde bestandsnaam, audio als mp3,
+video als mp4 portret 9:16, <20MB):
+
+- [ ] `public/assets/audio/meldkamer-welkom.mp3` — welkom + "meld je aan met je vingerafdruk"
+- [ ] `public/assets/audio/meldkamer-nummer.mp3` — instructie telefoonnummer invoeren
+- [ ] `public/assets/audio/meldkamer-fout-nummer.mp3` — "dit nummer is niet in gebruik"
+- [ ] `public/assets/audio/meldkamer-goed-nummer.mp3` — "nummer gevonden, apparatuur wordt gekoppeld"
+- [ ] `public/assets/audio/meldkamer-frequentie.mp3` — instructie frequentiepuzzel
+- [ ] `public/assets/audio/meldkamer-hack.mp3` — "we zijn binnen, live beeld..."
+- [ ] `public/assets/audio/meldkamer-slot.mp3` — "alle agenten: naar de speeltuin!"
+- [ ] `public/assets/audio/boef-fragmenten.mp3` — loopende stem-knipsels voor de puzzel
+- [ ] `public/assets/audio/boef-gesprek.mp3` — het volledige afgeluisterde gesprek
+- [ ] `public/assets/video/boef-live.mp4` — 15-30 sec, portret 9:16, H.264, <20MB
+- [ ] `public/icons/icon-192.png` / `icon-512.png` — eigen app-icoon (optioneel)
+
+Na vervangen: `npm run build` en opnieuw deployen (of gewoon pushen naar
+`main`, de GitHub Actions workflow doet dit automatisch).
+
+## Deployen naar GitHub Pages
+
+Eenmalig in de GitHub-repo instellen: **Settings → Pages → Source: GitHub
+Actions**. Daarna bouwt en deployt `.github/workflows/deploy.yml` de app
+automatisch bij elke push naar `main`. De app komt op
+`https://binister.github.io/goodiebag/`.
+
+## PWA installeren op de iPhone (Add to Home Screen)
+
+1. Open de gedeployde URL in Safari.
+2. Tik op het deel-icoon (vierkant met pijl omhoog).
+3. Kies "Zet op beginscherm".
+4. Open de app vanaf het beginscherm — na de eerste keer laden werkt hij
+   ook zonder internetverbinding (bijv. in vliegtuigmodus).
+
+## Testchecklist (op het echte toestel, niet vanuit dev-omgeving te verifiëren)
+
+- [ ] Volledige flow werkt in vliegtuigmodus, ook na 10 minuten stilstand.
+- [ ] Eerste tik op AANMELDEN unlockt audio; video start betrouwbaar via de hack-knop.
+- [ ] Scherm gaat niet op slot tijdens gebruik (Wake Lock).
+- [ ] Pinch-zoom, dubbeltik-zoom en pull-to-refresh zijn geblokkeerd.
+- [ ] Vingerafdrukscanner registreert alléén na de arm-gesture (dubbeltik
+      rechtsonder) van de ouder.
+- [ ] Verborgen oudercontrols werken: 3× tik rechtsboven (volgende), 3× tik
+      linksboven (vorige), 3 sec indrukken linksonder (reset).
+
+## Verborgen oudercontrols
+
+Onzichtbare hit-areas (~80×80px) in de hoeken van het scherm:
+
+- Dubbeltik rechtsonder → arm de vingerafdrukscanner (alleen scherm 1)
+- 3× tik rechtsboven → volgende scherm (skip)
+- 3× tik linksboven → vorig scherm
+- Lang indrukken (3 sec) linksonder → volledige reset
