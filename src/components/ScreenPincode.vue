@@ -70,7 +70,13 @@ const boxes = computed(() => digits.value.padEnd(PIN_LENGTH, ' ').split(''))
         <span v-for="(d, di) in boxes" :key="di" class="digit-box">{{ d.trim() }}</span>
       </div>
     </div>
-    <div v-else class="connecting-text">Afluisterapparatuur wordt gekoppeld</div>
+    <div v-else class="connecting">
+      <div class="connecting-text">Afluisterapparatuur wordt gekoppeld</div>
+      <div class="connect-dots">
+        <span v-for="n in 4" :key="n" class="connect-dot" :style="{ animationDelay: `${(n - 1) * 0.25}s` }"></span>
+      </div>
+      <div class="connect-progress"><div class="connect-progress-fill"></div></div>
+    </div>
     <input
       ref="inputRef"
       class="tel-input"
@@ -112,10 +118,58 @@ const boxes = computed(() => digits.value.padEnd(PIN_LENGTH, ' ').split(''))
   font-weight: 600;
   flex-shrink: 0;
 }
+.connecting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+}
 .connecting-text {
   font-size: 1.15rem;
   font-weight: 600;
   color: var(--text);
+}
+.connect-dots {
+  display: flex;
+  gap: 0.7rem;
+}
+.connect-dot {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  background: var(--bg-elevated-2);
+  animation: connectPulse 1s ease-in-out infinite;
+}
+@keyframes connectPulse {
+  0%,
+  100% {
+    background: var(--bg-elevated-2);
+    transform: scale(1);
+  }
+  30% {
+    background: var(--police-blue);
+    transform: scale(1.3);
+  }
+}
+.connect-progress {
+  width: 70vw;
+  max-width: 320px;
+  height: 0.5rem;
+  background: var(--bg-elevated);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.connect-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--police-blue);
+  border-radius: 999px;
+  animation: connectFill 1.8s var(--ease-standard) forwards;
+}
+@keyframes connectFill {
+  to {
+    width: 100%;
+  }
 }
 .tel-input {
   position: absolute;

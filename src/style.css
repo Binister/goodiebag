@@ -13,6 +13,7 @@
   --radius-md: 14px;
   --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -40,6 +41,22 @@ body {
   inset: 0;
   overflow: hidden;
   background: var(--bg);
+}
+
+#app::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 25, 50, 0.035) 0px,
+    rgba(0, 25, 50, 0.035) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
 }
 
 button {
@@ -72,7 +89,7 @@ input {
   inset: 0;
   background: linear-gradient(to bottom, transparent 0%, var(--police-blue-tint) 45%, var(--police-blue-tint) 55%, transparent 100%);
   transform: translateY(-120%);
-  animation: scanSweep 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: scanSweep 0.6s var(--ease-standard);
   pointer-events: none;
 }
 
@@ -87,8 +104,8 @@ input {
 .slide-prev-enter-active,
 .slide-prev-leave-active {
   transition:
-    opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity 0.55s var(--ease-standard),
+    transform 0.55s var(--ease-standard);
 }
 
 .slide-next-leave-active,

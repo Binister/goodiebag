@@ -155,9 +155,39 @@ function replayVideo() {
   width: 0.3rem;
   height: 1rem;
   background: rgba(255, 255, 255, 0.9);
+  animation: signalFlicker 2.4s ease-in-out infinite;
+}
+.signal-bars-small .bar:nth-child(1) {
+  animation-delay: 0s;
+}
+.signal-bars-small .bar:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.signal-bars-small .bar:nth-child(3) {
+  animation-delay: 0.6s;
+}
+@keyframes signalFlicker {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 .battery {
   align-self: flex-end;
+  animation: batteryFlicker 3.6s ease-in-out infinite;
+}
+@keyframes batteryFlicker {
+  0%,
+  92%,
+  100% {
+    opacity: 0.9;
+  }
+  95% {
+    opacity: 0.5;
+  }
 }
 .result-overlay {
   position: absolute;
