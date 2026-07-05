@@ -18,16 +18,20 @@ const MELDKAMER_VOICE = 'Xander'
 const BOEF_VOICE = 'Xander'
 const BOEF_PITCH_FILTER = 'asetrate=22050*0.8,aresample=22050,atempo=1.25'
 
+// Pauzes worden bewust met leestekens (. , ...) aangestuurd i.p.v. SSML
+// <break>-tags: macOS 'say' begrijpt geen SSML, en edge-tts (zie
+// generate-placeholders-edge-tts.py) escaped de tekst voordat die in SSML
+// wordt gewrapt, waardoor <break>-tags daar ook niet zouden werken.
 const AUDIO_CLIPS = [
   {
     file: 'meldkamer-welkom.mp3',
     voice: MELDKAMER_VOICE,
-    text: 'Welkom bij de politie afluistercentrale. Meld je aan met je vingerafdruk.'
+    text: 'Welkom bij de politie afluistercentrale... Meld je aan met je vingerafdruk.'
   },
   {
     file: 'meldkamer-pincode.mp3',
     voice: MELDKAMER_VOICE,
-    text: 'Voer de pincode van de telefoon van de boef in.'
+    text: 'Voer de pincode in, van de telefoon van de boef.'
   },
   {
     file: 'meldkamer-fout-pincode.mp3',
@@ -37,37 +41,37 @@ const AUDIO_CLIPS = [
   {
     file: 'meldkamer-goed-pincode.mp3',
     voice: MELDKAMER_VOICE,
-    text: 'Pincode gekraakt. Afluisterapparatuur wordt gekoppeld.'
+    text: 'Pincode gekraakt... Afluisterapparatuur wordt gekoppeld.'
   },
   {
     file: 'meldkamer-frequentie.mp3',
     voice: MELDKAMER_VOICE,
-    text: 'Draai aan de knop tot je het signaal van de boef te pakken hebt.'
+    text: 'Draai aan de knop, tot je het signaal van de boef te pakken hebt.'
   },
   {
     file: 'meldkamer-hack.mp3',
     voice: MELDKAMER_VOICE,
-    text: 'We zijn binnen. Live beeld van de telefoon van de verdachte komt op je scherm.'
+    text: 'We zijn binnen... Live beeld van de telefoon van de verdachte, komt op je scherm.'
   },
   {
     file: 'meldkamer-slot.mp3',
     voice: MELDKAMER_VOICE,
     text:
-      'Locatie herkend. Hopelijk hebben jullie nu genoeg informatie agenten. ' +
-      'Ga er op af en reken de boef in, maar onthoud: alleen schieten als hij vlucht!'
+      'Locatie herkend. Hopelijk hebben jullie nu genoeg informatie, agenten. ' +
+      'Ga er op af, en reken de boef in. Maar onthoud: alleen schieten, als hij vlucht!'
   },
   {
     file: 'boef-fragmenten.mp3',
     voice: BOEF_VOICE,
     pitchFilter: BOEF_PITCH_FILTER,
-    text: 'Ja, ja, ik zit hier goed verstopt. Niemand die mij vindt. Helemaal niemand.'
+    text: 'Ja, ja... ik zit hier goed verstopt. Niemand die mij vindt... Helemaal niemand.'
   },
   {
     file: 'boef-gesprek.mp3',
     voice: BOEF_VOICE,
     pitchFilter: BOEF_PITCH_FILTER,
     text:
-      'Hallo, met mij. Nee, ze vinden me hier nooit. Ik zit goed verstopt bij de speeltuin. ' +
+      'Hallo, met mij... Nee, ze vinden me hier nooit. Ik zit goed verstopt, bij de speeltuin. ' +
       'Over een uurtje kom ik eruit, dan is de kust vast wel weer veilig.'
   }
 ]

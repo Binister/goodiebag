@@ -22,6 +22,10 @@ Installeren en draaien:
 
 Klopt een stemnaam niet meer (Microsoft wijzigt ze weleens)? Controleer met:
     edge-tts --list-voices | grep nl-
+
+Pauzes worden bewust met leestekens (. , ...) aangestuurd i.p.v. SSML
+<break>-tags: deze library escaped de tekst voordat die in SSML wordt
+gewrapt, waardoor <break>-tags hier niet zouden werken.
 """
 
 import asyncio
@@ -42,14 +46,14 @@ CLIPS = [
         MELDKAMER_VOICE,
         None,
         None,
-        "Welkom bij de politie afluistercentrale. Meld je aan met je vingerafdruk.",
+        "Welkom bij de politie afluistercentrale... Meld je aan met je vingerafdruk.",
     ),
     (
         "meldkamer-pincode.mp3",
         MELDKAMER_VOICE,
         None,
         None,
-        "Voer de pincode van de telefoon van de boef in.",
+        "Voer de pincode in, van de telefoon van de boef.",
     ),
     (
         "meldkamer-fout-pincode.mp3",
@@ -63,43 +67,43 @@ CLIPS = [
         MELDKAMER_VOICE,
         None,
         None,
-        "Pincode gekraakt. Afluisterapparatuur wordt gekoppeld.",
+        "Pincode gekraakt... Afluisterapparatuur wordt gekoppeld.",
     ),
     (
         "meldkamer-frequentie.mp3",
         MELDKAMER_VOICE,
         None,
         None,
-        "Draai aan de knop tot je het signaal van de boef te pakken hebt.",
+        "Draai aan de knop, tot je het signaal van de boef te pakken hebt.",
     ),
     (
         "meldkamer-hack.mp3",
         MELDKAMER_VOICE,
         None,
         None,
-        "We zijn binnen. Live beeld van de telefoon van de verdachte komt op je scherm.",
+        "We zijn binnen... Live beeld van de telefoon van de verdachte, komt op je scherm.",
     ),
     (
         "meldkamer-slot.mp3",
         MELDKAMER_VOICE,
         None,
         None,
-        "Locatie herkend. Hopelijk hebben jullie nu genoeg informatie agenten. "
-        "Ga er op af en reken de boef in, maar onthoud: alleen schieten als hij vlucht!",
+        "Locatie herkend. Hopelijk hebben jullie nu genoeg informatie, agenten. "
+        "Ga er op af, en reken de boef in. Maar onthoud: alleen schieten, als hij vlucht!",
     ),
     (
         "boef-fragmenten.mp3",
         BOEF_VOICE,
         BOEF_RATE,
         BOEF_PITCH,
-        "Ja, ja, ik zit hier goed verstopt. Niemand die mij vindt. Helemaal niemand.",
+        "Ja, ja... ik zit hier goed verstopt. Niemand die mij vindt... Helemaal niemand.",
     ),
     (
         "boef-gesprek.mp3",
         BOEF_VOICE,
         BOEF_RATE,
         BOEF_PITCH,
-        "Hallo, met mij. Nee, ze vinden me hier nooit. Ik zit goed verstopt bij de speeltuin. "
+        "Hallo, met mij... Nee, ze vinden me hier nooit. Ik zit goed verstopt, bij de speeltuin. "
         "Over een uurtje kom ik eruit, dan is de kust vast wel weer veilig.",
     ),
 ]
