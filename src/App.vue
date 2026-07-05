@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, provide, computed } from 'vue'
+import { reactive, ref, provide, computed } from 'vue'
 import HiddenControls from './components/HiddenControls.vue'
 import PoliceBadge from './components/PoliceBadge.vue'
 import ScreenStart from './components/ScreenStart.vue'
@@ -21,13 +21,18 @@ const state = reactive({
   agentCount: 0
 })
 
+const direction = ref('forward')
+
 function goNext() {
+  direction.value = 'forward'
   state.screen = Math.min(state.screen + 1, SCREENS.length - 1)
 }
 function goPrev() {
+  direction.value = 'backward'
   state.screen = Math.max(state.screen - 1, 0)
 }
 function reset() {
+  direction.value = 'forward'
   state.screen = 0
   state.scannerArmed = true
   state.agentCount = 0
@@ -54,11 +59,12 @@ provide('flow', flow)
 provide('audio', audio)
 
 const currentScreen = computed(() => SCREENS[state.screen])
+const transitionName = computed(() => (direction.value === 'forward' ? 'slide-next' : 'slide-prev'))
 </script>
 
 <template>
   <div class="app-root">
-    <Transition name="screen-fade" appear>
+    <Transition :name="transitionName" appear>
       <component :is="currentScreen" :key="state.screen" />
     </Transition>
     <PoliceBadge />
