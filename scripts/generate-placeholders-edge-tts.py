@@ -6,8 +6,11 @@ Genereer placeholder-audio met Microsoft Edge's gratis neurale TTS
 Voordelen t.o.v. scripts/generate-placeholders.mjs:
 - Werkt op elk platform (geen macOS nodig).
 - Gratis, geen account of API-key.
-- Twee echt verschillende Nederlandse stemmen voor meldkamer en boef,
-  i.p.v. dezelfde mac-stem met een pitch-shift-truc.
+- Veel natuurlijkere stem dan macOS 'say'.
+
+edge-tts heeft voor nl-NL maar één mannenstem (Maarten), dus net als in
+het mac-script wordt dezelfde stem gebruikt voor meldkamer en boef, met
+een duidelijk lagere pitch en tragere rate voor de boef.
 
 Vereist een normale internetverbinding (dit script praat met Microsoft's
 online spraakdienst) - draai het dus niet vanuit een sandbox die
@@ -29,9 +32,9 @@ import edge_tts
 AUDIO_DIR = Path(__file__).resolve().parent.parent / "public" / "assets" / "audio"
 
 MELDKAMER_VOICE = "nl-NL-MaartenNeural"
-BOEF_VOICE = "nl-BE-ArnaudNeural"
-BOEF_RATE = "-8%"
-BOEF_PITCH = "-15Hz"
+BOEF_VOICE = "nl-NL-MaartenNeural"
+BOEF_RATE = "-15%"
+BOEF_PITCH = "-30Hz"
 
 CLIPS = [
     (

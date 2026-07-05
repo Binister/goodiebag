@@ -29,9 +29,10 @@ npm run gen:placeholders
 ```
 
 **Optie B — edge-tts (aanbevolen: werkt op elk platform, gratis, geen
-account/API-key nodig, en levert twee écht verschillende Nederlandse
-stemmen op voor meldkamer en boef i.p.v. één mac-stem met een
-pitch-shift-truc):**
+account/API-key nodig, en klinkt veel natuurlijker dan macOS `say`).
+nl-NL heeft maar één mannenstem (Maarten); die wordt voor zowel
+meldkamer als boef gebruikt, met een lagere pitch/tragere rate voor de
+boef:**
 
 ```
 pip install edge-tts
