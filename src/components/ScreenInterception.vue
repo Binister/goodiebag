@@ -7,15 +7,28 @@ const phase = ref('A')
 const showVideo = ref(false)
 const videoDone = ref(false)
 const videoRef = ref(null)
+const gesprekPlaying = ref(false)
 
 const videoSrc = computed(() => import.meta.env.BASE_URL + 'assets/video/boef-live.mp4')
 
 onMounted(() => {
-  audio.play('boefGesprek')
+  playGesprek()
 })
 
+function playGesprek() {
+  gesprekPlaying.value = true
+  const playback = audio.play('boefGesprek')
+  if (playback?.source) {
+    playback.source.onended = () => {
+      gesprekPlaying.value = false
+    }
+  } else {
+    gesprekPlaying.value = false
+  }
+}
+
 function replayGesprek() {
-  audio.play('boefGesprek')
+  playGesprek()
 }
 
 function startHack() {
@@ -45,7 +58,7 @@ function replayVideo() {
   <div class="screen interception-screen">
     <template v-if="phase === 'A'">
       <h1 class="screen-title">Verbinding onderschept</h1>
-      <div class="waveform">
+      <div class="waveform" :class="{ playing: gesprekPlaying }">
         <span v-for="n in 12" :key="n" class="bar" :style="{ animationDelay: `${n * 0.07}s` }"></span>
       </div>
       <button class="big-button secondary" @click="replayGesprek">↻ Opnieuw afspelen</button>
@@ -91,9 +104,14 @@ function replayVideo() {
 }
 .waveform .bar {
   width: 0.5rem;
-  height: 1rem;
+  height: 0.6rem;
   background: var(--police-blue);
   animation: wave 0.9s ease-in-out infinite;
+  animation-play-state: paused;
+  transition: height 0.2s ease-out;
+}
+.waveform.playing .bar {
+  animation-play-state: running;
 }
 @keyframes wave {
   0%,

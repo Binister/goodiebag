@@ -65,7 +65,7 @@ const boxes = computed(() => digits.value.padEnd(PIN_LENGTH, ' ').split(''))
 <template>
   <div class="screen pincode-screen" :class="flash && `flash-${flash}`">
     <h1 class="screen-title">Voer de pincode in</h1>
-    <div v-if="!connecting" class="card digit-card">
+    <div v-if="!connecting" class="card digit-card" :class="{ shake: flash === 'red' }">
       <div class="digit-group">
         <span v-for="(d, di) in boxes" :key="di" class="digit-box">{{ d.trim() }}</span>
       </div>
@@ -96,6 +96,9 @@ const boxes = computed(() => digits.value.padEnd(PIN_LENGTH, ' ').split(''))
 }
 .digit-card {
   max-width: 100%;
+}
+.digit-card.shake {
+  animation: shake 0.5s var(--ease-standard);
 }
 .digit-group {
   display: flex;

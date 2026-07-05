@@ -24,12 +24,16 @@ const state = reactive({
 const direction = ref('forward')
 
 function goNext() {
+  if (state.screen >= SCREENS.length - 1) return
   direction.value = 'forward'
-  state.screen = Math.min(state.screen + 1, SCREENS.length - 1)
+  audio.playTransitionSweep('forward')
+  state.screen += 1
 }
 function goPrev() {
+  if (state.screen <= 0) return
   direction.value = 'backward'
-  state.screen = Math.max(state.screen - 1, 0)
+  audio.playTransitionSweep('backward')
+  state.screen -= 1
 }
 function reset() {
   direction.value = 'forward'

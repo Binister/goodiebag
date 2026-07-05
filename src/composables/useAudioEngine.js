@@ -86,6 +86,23 @@ export function useAudioEngine() {
     }
   }
 
+  function playTransitionSweep(direction = 'forward') {
+    if (!ctx) return
+    const startFreq = direction === 'forward' ? 500 : 900
+    const endFreq = direction === 'forward' ? 900 : 500
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(startFreq, ctx.currentTime)
+    osc.frequency.exponentialRampToValueAtTime(endFreq, ctx.currentTime + 0.18)
+    gain.gain.setValueAtTime(0.0001, ctx.currentTime)
+    gain.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + 0.03)
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2)
+    osc.connect(gain).connect(ctx.destination)
+    osc.start(ctx.currentTime)
+    osc.stop(ctx.currentTime + 0.22)
+  }
+
   function playLoop(buffer, initialGain = 1) {
     const source = ctx.createBufferSource()
     source.buffer = buffer
@@ -118,5 +135,15 @@ export function useAudioEngine() {
     return playLoop(buffers.boefFragmenten, 0)
   }
 
-  return { ready, unlock, play, stopAll, beep, playAscendingBeeps, playNoiseLoop, playBoefLoop }
+  return {
+    ready,
+    unlock,
+    play,
+    stopAll,
+    beep,
+    playAscendingBeeps,
+    playTransitionSweep,
+    playNoiseLoop,
+    playBoefLoop
+  }
 }
