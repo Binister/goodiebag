@@ -2,9 +2,9 @@ import { ref } from 'vue'
 
 const AUDIO_FILES = {
   welkom: 'assets/audio/meldkamer-welkom.mp3',
-  nummerInstructie: 'assets/audio/meldkamer-nummer.mp3',
-  foutNummer: 'assets/audio/meldkamer-fout-nummer.mp3',
-  goedNummer: 'assets/audio/meldkamer-goed-nummer.mp3',
+  pincodeInstructie: 'assets/audio/meldkamer-pincode.mp3',
+  foutPincode: 'assets/audio/meldkamer-fout-pincode.mp3',
+  goedPincode: 'assets/audio/meldkamer-goed-pincode.mp3',
   frequentieInstructie: 'assets/audio/meldkamer-frequentie.mp3',
   hack: 'assets/audio/meldkamer-hack.mp3',
   slot: 'assets/audio/meldkamer-slot.mp3',

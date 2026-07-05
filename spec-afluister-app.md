@@ -2,8 +2,8 @@
 
 ## Context (kort)
 Onderdeel van een politiespeurtocht op een kinderfeestje (7 kinderen, 4–6 jaar).
-De kinderen hebben buiten een kaartje gevonden met het telefoonnummer van "de boef".
-In deze app voeren ze dat nummer in, "luisteren" ze zijn telefoongesprek af en zien
+De kinderen hebben buiten een kaartje gevonden met de pincode van de telefoon van "de boef".
+In deze app voeren ze die pincode in, "luisteren" ze zijn telefoongesprek af en zien
 ze een nep-live-videobeeld uit zijn telefoon dat verraadt waar hij zich verstopt.
 Eén ouder begeleidt en bedient verborgen controls; de telefoon gaat van kind naar kind.
 
@@ -44,17 +44,17 @@ Eén ouder begeleidt en bedient verborgen controls; de telefoon gaat van kind na
   ("wachten op meldkamer..."). Dubbeltik rechtsonder (verborgen) armt de scanner
   voor het volgende kind. Doorgaan naar scherm 2 via de skip-gesture.
 
-### Scherm 2 — Telefoonnummer invoeren
-- Instructie-audio speelt (`meldkamer-nummer.mp3`).
+### Scherm 2 — Pincode invoeren
+- Instructie-audio speelt (`meldkamer-pincode.mp3`).
 - Invoerveld met het **native iOS-numerieke toetsenbord** (`type="tel"` /
   `inputmode="numeric"`) — geen eigen numpad bouwen. Ingetikte cijfers verschijnen
-  in tien grote vakjes in groepering `06 - 21 07 21 07`; wissen via de native
-  backspace. **Juist nummer: 0621072107.**
+  in zes grote vakjes op één rij; wissen via de native backspace.
+  **Juiste pincode: 260721.**
   Let op: font-size van het input-element ≥ 16px (voorkomt iOS auto-zoom bij focus)
   en focus vasthouden zodat het toetsenbord niet wegklapt tussen kinderen door.
-- Compleet & fout: rode flits + zoemer + `meldkamer-fout-nummer.mp3`;
+- Compleet & fout: rode flits + zoemer + `meldkamer-fout-pincode.mp3`;
   onbeperkt opnieuw.
-- Goed: groene flits, "NUMMER GEVONDEN — AFLUISTERAPPARATUUR WORDT GEKOPPELD",
+- Goed: groene flits, "PINCODE GEKRAAKT — AFLUISTERAPPARATUUR WORDT GEKOPPELD",
   korte koppel-animatie met piepjes → scherm 3.
 
 ### Scherm 3 — Frequentiepuzzel (bewust simpel)
@@ -88,9 +88,9 @@ bestandsnamen, zodat echte opnames er later 1-op-1 in kunnen:
 
 ```
 assets/audio/meldkamer-welkom.mp3        # welkom + "meld je aan met je vingerafdruk"
-assets/audio/meldkamer-nummer.mp3        # instructie telefoonnummer invoeren
-assets/audio/meldkamer-fout-nummer.mp3   # "dit nummer is niet in gebruik"
-assets/audio/meldkamer-goed-nummer.mp3   # "nummer gevonden, apparatuur wordt gekoppeld"
+assets/audio/meldkamer-pincode.mp3        # instructie pincode invoeren
+assets/audio/meldkamer-fout-pincode.mp3   # "deze pincode klopt niet"
+assets/audio/meldkamer-goed-pincode.mp3   # "pincode gekraakt, apparatuur wordt gekoppeld"
 assets/audio/meldkamer-frequentie.mp3    # instructie frequentiepuzzel
 assets/audio/meldkamer-hack.mp3          # "we zijn binnen, live beeld..."
 assets/audio/meldkamer-slot.mp3          # "alle agenten: naar de speeltuin!"

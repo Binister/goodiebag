@@ -25,19 +25,19 @@ const AUDIO_CLIPS = [
     text: 'Welkom bij de politie afluistercentrale. Meld je aan met je vingerafdruk.'
   },
   {
-    file: 'meldkamer-nummer.mp3',
+    file: 'meldkamer-pincode.mp3',
     voice: MELDKAMER_VOICE,
-    text: 'Voer het telefoonnummer van de boef in.'
+    text: 'Voer de pincode van de telefoon van de boef in.'
   },
   {
-    file: 'meldkamer-fout-nummer.mp3',
+    file: 'meldkamer-fout-pincode.mp3',
     voice: MELDKAMER_VOICE,
-    text: 'Dit nummer is niet in gebruik. Probeer het opnieuw.'
+    text: 'Deze pincode klopt niet. Probeer het opnieuw.'
   },
   {
-    file: 'meldkamer-goed-nummer.mp3',
+    file: 'meldkamer-goed-pincode.mp3',
     voice: MELDKAMER_VOICE,
-    text: 'Nummer gevonden. Afluisterapparatuur wordt gekoppeld.'
+    text: 'Pincode gekraakt. Afluisterapparatuur wordt gekoppeld.'
   },
   {
     file: 'meldkamer-frequentie.mp3',

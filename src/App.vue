@@ -4,13 +4,13 @@ import HiddenControls from './components/HiddenControls.vue'
 import PoliceBadge from './components/PoliceBadge.vue'
 import ScreenStart from './components/ScreenStart.vue'
 import ScreenFingerprint from './components/ScreenFingerprint.vue'
-import ScreenPhoneNumber from './components/ScreenPhoneNumber.vue'
+import ScreenPincode from './components/ScreenPincode.vue'
 import ScreenFrequency from './components/ScreenFrequency.vue'
 import ScreenInterception from './components/ScreenInterception.vue'
 import { useAudioEngine } from './composables/useAudioEngine'
 import { useWakeLock } from './composables/useWakeLock'
 
-const SCREENS = [ScreenStart, ScreenFingerprint, ScreenPhoneNumber, ScreenFrequency, ScreenInterception]
+const SCREENS = [ScreenStart, ScreenFingerprint, ScreenPincode, ScreenFrequency, ScreenInterception]
 
 const audio = useAudioEngine()
 const wakeLock = useWakeLock()
@@ -58,7 +58,9 @@ const currentScreen = computed(() => SCREENS[state.screen])
 
 <template>
   <div class="app-root">
-    <component :is="currentScreen" />
+    <Transition name="screen-fade" appear>
+      <component :is="currentScreen" :key="state.screen" />
+    </Transition>
     <PoliceBadge />
     <HiddenControls
       :arm-enabled="state.screen === 1"

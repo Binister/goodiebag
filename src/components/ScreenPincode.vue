@@ -4,14 +4,15 @@ import { inject, onMounted, ref, computed, nextTick } from 'vue'
 const flow = inject('flow')
 const audio = inject('audio')
 
-const TARGET = '0621072107'
+const PIN_LENGTH = 6
+const TARGET = '260721'
 const digits = ref('')
 const flash = ref('')
 const connecting = ref(false)
 const inputRef = ref(null)
 
 onMounted(() => {
-  audio.play('nummerInstructie')
+  audio.play('pincodeInstructie')
   focusInput()
 })
 
@@ -20,15 +21,15 @@ function focusInput() {
 }
 
 function onInput(e) {
-  const raw = e.target.value.replace(/\D/g, '').slice(0, 10)
+  const raw = e.target.value.replace(/\D/g, '').slice(0, PIN_LENGTH)
   digits.value = raw
   e.target.value = raw
-  if (raw.length === 10) {
-    checkNumber()
+  if (raw.length === PIN_LENGTH) {
+    checkPincode()
   }
 }
 
-function checkNumber() {
+function checkPincode() {
   if (digits.value === TARGET) {
     handleCorrect()
   } else {
@@ -39,7 +40,7 @@ function checkNumber() {
 function handleWrong() {
   flash.value = 'red'
   audio.beep(220, 0.3)
-  audio.play('foutNummer')
+  audio.play('foutPincode')
   setTimeout(() => {
     flash.value = ''
     digits.value = ''
@@ -50,7 +51,7 @@ function handleWrong() {
 
 function handleCorrect() {
   flash.value = 'green'
-  audio.play('goedNummer')
+  audio.play('goedPincode')
   connecting.value = true
   audio.playAscendingBeeps(4, 0.25)
   setTimeout(() => {
@@ -58,20 +59,15 @@ function handleCorrect() {
   }, 1800)
 }
 
-const groups = computed(() => {
-  const padded = digits.value.padEnd(10, ' ').split('')
-  return [padded.slice(0, 2), padded.slice(2, 4), padded.slice(4, 6), padded.slice(6, 8), padded.slice(8, 10)]
-})
+const boxes = computed(() => digits.value.padEnd(PIN_LENGTH, ' ').split(''))
 </script>
 
 <template>
-  <div class="screen phone-screen" :class="flash && `flash-${flash}`">
-    <h1 class="screen-title">Voer het nummer in</h1>
+  <div class="screen pincode-screen" :class="flash && `flash-${flash}`">
+    <h1 class="screen-title">Voer de pincode in</h1>
     <div v-if="!connecting" class="card digit-card">
-      <div class="digit-groups">
-        <div v-for="(group, gi) in groups" :key="gi" class="digit-group">
-          <span v-for="(d, di) in group" :key="di" class="digit-box">{{ d.trim() }}</span>
-        </div>
+      <div class="digit-group">
+        <span v-for="(d, di) in boxes" :key="di" class="digit-box">{{ d.trim() }}</span>
       </div>
     </div>
     <div v-else class="connecting-text">Afluisterapparatuur wordt gekoppeld</div>
@@ -88,33 +84,31 @@ const groups = computed(() => {
 </template>
 
 <style scoped>
-.phone-screen {
+.pincode-screen {
   justify-content: flex-start;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 3rem);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 4rem);
 }
 .digit-card {
   max-width: 100%;
 }
-.digit-groups {
-  display: flex;
-  gap: 1.5vw;
-  max-width: 100%;
-}
 .digit-group {
   display: flex;
-  gap: 0.6vw;
+  gap: 2.2vw;
+  max-width: 100%;
 }
 .digit-box {
-  width: 6.5vw;
-  height: 8.5vw;
+  width: 11vw;
+  height: 14vw;
+  max-width: 66px;
+  max-height: 84px;
   background: #ffffff;
   box-shadow: inset 0 0 0 1.5px rgba(11, 31, 51, 0.15);
-  border-radius: 0.55rem;
+  border-radius: 0.65rem;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
-  font-size: 3.8vw;
+  font-size: 6vw;
   font-weight: 600;
   flex-shrink: 0;
 }

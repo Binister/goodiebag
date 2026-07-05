@@ -66,6 +66,43 @@ input {
   text-align: center;
 }
 
+.screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, var(--police-blue-tint) 45%, var(--police-blue-tint) 55%, transparent 100%);
+  transform: translateY(-120%);
+  animation: scanSweep 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+@keyframes scanSweep {
+  to {
+    transform: translateY(120%);
+  }
+}
+
+.screen-fade-enter-active,
+.screen-fade-leave-active {
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.screen-fade-leave-active {
+  pointer-events: none;
+}
+
+.screen-fade-enter-from {
+  opacity: 0;
+  transform: scale(0.97);
+}
+
+.screen-fade-leave-to {
+  opacity: 0;
+  transform: scale(1.03);
+}
+
 .screen-title {
   font-size: 1.7rem;
   font-weight: 700;

@@ -1,7 +1,7 @@
 # Politie Afluistercentrale
 
 Politiespeurtocht-app voor een kinderfeestje (7 kinderen, 4-6 jaar): de
-kinderen voeren het telefoonnummer van "de boef" in, "luisteren" zijn
+kinderen voeren de pincode van de telefoon van "de boef" in, "luisteren" zijn
 gesprek af en hacken zijn live-camerabeeld om zijn schuilplaats te vinden.
 Eén iPhone, Safari, één ouder bedient onzichtbaar de voortgang. Zie
 [spec-afluister-app.md](spec-afluister-app.md) voor de volledige spec.
@@ -33,9 +33,9 @@ Vervang onderstaande bestanden 1-op-1 (zelfde bestandsnaam, audio als mp3,
 video als mp4 portret 9:16, <20MB):
 
 - [ ] `public/assets/audio/meldkamer-welkom.mp3` — welkom + "meld je aan met je vingerafdruk"
-- [ ] `public/assets/audio/meldkamer-nummer.mp3` — instructie telefoonnummer invoeren
-- [ ] `public/assets/audio/meldkamer-fout-nummer.mp3` — "dit nummer is niet in gebruik"
-- [ ] `public/assets/audio/meldkamer-goed-nummer.mp3` — "nummer gevonden, apparatuur wordt gekoppeld"
+- [ ] `public/assets/audio/meldkamer-pincode.mp3` — instructie pincode invoeren
+- [ ] `public/assets/audio/meldkamer-fout-pincode.mp3` — "deze pincode klopt niet"
+- [ ] `public/assets/audio/meldkamer-goed-pincode.mp3` — "pincode gekraakt, apparatuur wordt gekoppeld"
 - [ ] `public/assets/audio/meldkamer-frequentie.mp3` — instructie frequentiepuzzel
 - [ ] `public/assets/audio/meldkamer-hack.mp3` — "we zijn binnen, live beeld..."
 - [ ] `public/assets/audio/meldkamer-slot.mp3` — "locatie herkend, ga erop af..."
