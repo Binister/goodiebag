@@ -15,21 +15,35 @@ const zoneHalfWidth = ref(60)
 const value = ref(0)
 const locked = ref(false)
 
+const ready = ref(false)
+
 let noiseLoop = null
 let boefLoop = null
 let widenTimer = null
 let holdTimer = null
+let startTimer = null
 let inZone = false
 
 onMounted(() => {
+  const instructionMs = audio.getDuration('frequentieInstructie') * 1000
   audio.play('frequentieInstructie')
-  noiseLoop = audio.playNoiseLoop()
-  widenTimer = setTimeout(() => {
-    zoneHalfWidth.value *= 2
-  }, 30000)
+  // Ruis (en dus ook het boef-signaal) mag pas beginnen zodra de
+  // instructie is uitgesproken, nooit ertussendoor.
+  startTimer = setTimeout(() => {
+    noiseLoop = audio.playNoiseLoop()
+    ready.value = true
+    // De naald kan al in de doelzone staan tegen de tijd dat de instructie
+    // klaar is; isInZone verandert dan niet meer, dus de watcher hieronder
+    // vuurt niet vanzelf - handmatig checken.
+    if (isInZone.value) enterZone()
+    widenTimer = setTimeout(() => {
+      zoneHalfWidth.value *= 2
+    }, 30000)
+  }, instructionMs + 150)
 })
 
 onUnmounted(() => {
+  if (startTimer) clearTimeout(startTimer)
   noiseLoop?.stop()
   boefLoop?.stop()
   if (widenTimer) clearTimeout(widenTimer)
@@ -66,25 +80,32 @@ const minorTicks = computed(() => {
   return ticks
 })
 
-watch(isInZone, (nowInZone) => {
-  if (locked.value) return
-  if (nowInZone && !inZone) {
-    inZone = true
-    boefLoop = audio.playBoefLoop()
-    boefLoop.setGain(1, 0.2)
-    noiseLoop?.setGain(0.12, 0.2)
-    holdTimer = setTimeout(lockSignal, HOLD_MS)
-  } else if (!nowInZone && inZone) {
-    inZone = false
-    if (holdTimer) clearTimeout(holdTimer)
-    noiseLoop?.setGain(1, 0.2)
-    if (boefLoop) {
-      const toStop = boefLoop
-      toStop.setGain(0, 0.15)
-      setTimeout(() => toStop.stop(), 200)
-      boefLoop = null
-    }
+function enterZone() {
+  if (inZone) return
+  inZone = true
+  boefLoop = audio.playBoefLoop()
+  boefLoop.setGain(1, 0.2)
+  noiseLoop?.setGain(0.12, 0.2)
+  holdTimer = setTimeout(lockSignal, HOLD_MS)
+}
+
+function exitZone() {
+  if (!inZone) return
+  inZone = false
+  if (holdTimer) clearTimeout(holdTimer)
+  noiseLoop?.setGain(1, 0.2)
+  if (boefLoop) {
+    const toStop = boefLoop
+    toStop.setGain(0, 0.15)
+    setTimeout(() => toStop.stop(), 200)
+    boefLoop = null
   }
+}
+
+watch(isInZone, (nowInZone) => {
+  if (!ready.value || locked.value) return
+  if (nowInZone) enterZone()
+  else exitZone()
 })
 
 function lockSignal() {

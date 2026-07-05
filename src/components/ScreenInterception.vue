@@ -8,6 +8,7 @@ const showVideo = ref(false)
 const videoDone = ref(false)
 const videoRef = ref(null)
 const gesprekPlaying = ref(false)
+let currentGesprekSource = null
 
 const videoSrc = computed(() => import.meta.env.BASE_URL + 'assets/video/boef-live.mp4')
 
@@ -16,12 +17,20 @@ onMounted(() => {
 })
 
 function playGesprek() {
+  // audio.play() stopt zelf al een eventueel nog spelende vorige beurt
+  // (bv. bij snel op "opnieuw afspelen" drukken), maar de oude bron kan
+  // zijn eigen 'ended' nog steeds na de nieuwe start vuren. Alleen de
+  // laatst gestarte bron mag gesprekPlaying dus nog beïnvloeden.
   gesprekPlaying.value = true
   const playback = audio.play('boefGesprek')
+  currentGesprekSource = playback?.source ?? null
   if (playback?.source) {
-    playback.source.onended = () => {
-      gesprekPlaying.value = false
-    }
+    const thisSource = playback.source
+    thisSource.addEventListener('ended', () => {
+      if (currentGesprekSource === thisSource) {
+        gesprekPlaying.value = false
+      }
+    })
   } else {
     gesprekPlaying.value = false
   }

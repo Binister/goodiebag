@@ -27,6 +27,11 @@ export function useAudioEngine() {
   const buffers = {}
   let noiseBuffer = null
   const activeSources = []
+  // Op één "voice channel" na (instructies, dialoog, de transitie-swoosh)
+  // mag er nooit meer dan één ding tegelijk klinken: een nieuwe voice
+  // stopt altijd eerst wat daarvoor bezig was. Ambient loops (ruis,
+  // boef-fragmenten) lopen hier bewust buitenom.
+  let currentVoiceSource = null
 
   async function unlock() {
     if (ctx) return
@@ -43,8 +48,31 @@ export function useAudioEngine() {
     ready.value = true
   }
 
+  function stopCurrentVoice() {
+    if (currentVoiceSource) {
+      try {
+        currentVoiceSource.stop()
+      } catch {
+        // already stopped
+      }
+      currentVoiceSource = null
+    }
+  }
+
+  function trackVoice(node) {
+    currentVoiceSource = node
+    node.addEventListener('ended', () => {
+      if (currentVoiceSource === node) currentVoiceSource = null
+    })
+  }
+
+  function getDuration(key) {
+    return buffers[key]?.duration ?? 0
+  }
+
   function play(key, { loop = false, volume = 1 } = {}) {
     if (!ctx || !buffers[key]) return null
+    if (!loop) stopCurrentVoice()
     const source = ctx.createBufferSource()
     source.buffer = buffers[key]
     source.loop = loop
@@ -53,7 +81,16 @@ export function useAudioEngine() {
     source.connect(gain).connect(ctx.destination)
     source.start()
     activeSources.push(source)
+    if (!loop) trackVoice(source)
     return { source, gain }
+  }
+
+  function playAndWait(key, opts) {
+    const playback = play(key, opts)
+    if (!playback) return Promise.resolve(null)
+    return new Promise((resolve) => {
+      playback.source.addEventListener('ended', () => resolve(playback))
+    })
   }
 
   function stopAll() {
@@ -88,6 +125,9 @@ export function useAudioEngine() {
 
   function playTransitionSweep(direction = 'forward') {
     if (!ctx) return
+    // De swoosh is puur decoratief: als er al een stem/instructie bezig
+    // is, laat die dan gewoon doorlopen i.p.v. 'm te onderbreken.
+    if (currentVoiceSource) return
     const startFreq = direction === 'forward' ? 500 : 900
     const endFreq = direction === 'forward' ? 900 : 500
     const osc = ctx.createOscillator()
@@ -101,6 +141,7 @@ export function useAudioEngine() {
     osc.connect(gain).connect(ctx.destination)
     osc.start(ctx.currentTime)
     osc.stop(ctx.currentTime + 0.22)
+    trackVoice(osc)
   }
 
   function playLoop(buffer, initialGain = 1) {
@@ -139,6 +180,9 @@ export function useAudioEngine() {
     ready,
     unlock,
     play,
+    playAndWait,
+    stopVoice: stopCurrentVoice,
+    getDuration,
     stopAll,
     beep,
     playAscendingBeeps,

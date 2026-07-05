@@ -37,10 +37,18 @@ function checkPincode() {
   }
 }
 
+const BEEP_DURATION = 0.3
+const ASCENDING_BEEPS_COUNT = 4
+const ASCENDING_BEEPS_SPACING = 0.25
+
 function handleWrong() {
   flash.value = 'red'
-  audio.beep(220, 0.3)
-  audio.play('foutPincode')
+  // Als de instructie nog aan het praten was toen het kind klaar tikte,
+  // eerst die afkappen: de foutmelding-beep mag daar nooit doorheen klinken.
+  audio.stopVoice()
+  audio.beep(220, BEEP_DURATION)
+  // Pas na de zoemer starten, nooit tegelijk met de gesproken foutmelding.
+  setTimeout(() => audio.play('foutPincode'), BEEP_DURATION * 1000 + 20)
   setTimeout(() => {
     flash.value = ''
     digits.value = ''
@@ -51,12 +59,18 @@ function handleWrong() {
 
 function handleCorrect() {
   flash.value = 'green'
-  audio.play('goedPincode')
   connecting.value = true
-  audio.playAscendingBeeps(4, 0.25)
-  setTimeout(() => {
-    flow.goNext()
-  }, 1800)
+  const voiceMs = audio.getDuration('goedPincode') * 1000
+  audio.play('goedPincode')
+  // De oplopende piepjes pas laten horen zodra de stem is uitgesproken.
+  const beepsMs = ASCENDING_BEEPS_COUNT * ASCENDING_BEEPS_SPACING * 1000 + 300
+  setTimeout(() => audio.playAscendingBeeps(ASCENDING_BEEPS_COUNT, ASCENDING_BEEPS_SPACING), voiceMs + 150)
+  setTimeout(
+    () => {
+      flow.goNext()
+    },
+    voiceMs + 150 + beepsMs
+  )
 }
 
 const boxes = computed(() => digits.value.padEnd(PIN_LENGTH, ' ').split(''))
