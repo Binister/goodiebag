@@ -19,13 +19,30 @@ npm run dev
 ## Placeholder-assets opnieuw genereren
 
 Alle audio (`public/assets/audio/*.mp3`) en de video
-(`public/assets/video/boef-live.mp4`) zijn nu placeholders: audio via macOS
-`say` (Nederlandse TTS) en video een ffmpeg-testpatroon. Opnieuw genereren
-(macOS met `say` nodig):
+(`public/assets/video/boef-live.mp4`) zijn nu placeholders. Er zijn twee
+manieren om de audio opnieuw te genereren:
+
+**Optie A — macOS `say` (alleen op macOS):**
 
 ```
 npm run gen:placeholders
 ```
+
+**Optie B — edge-tts (aanbevolen: werkt op elk platform, gratis, geen
+account/API-key nodig, en levert twee écht verschillende Nederlandse
+stemmen op voor meldkamer en boef i.p.v. één mac-stem met een
+pitch-shift-truc):**
+
+```
+pip install edge-tts
+npm run gen:placeholders:edge-tts
+```
+
+Beide scripts vereisen een normale internetverbinding (macOS `say` niet,
+maar de ffmpeg-conversie en edge-tts wel) en overschrijven dezelfde
+bestandsnamen in `public/assets/audio/`. De video-placeholder
+(`boef-live.mp4`) wordt alleen door `npm run gen:placeholders`
+(optie A) opnieuw gegenereerd — edge-tts doet geen video.
 
 ### Checklist: placeholders vervangen door echte opnames
 
