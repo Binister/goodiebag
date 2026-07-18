@@ -10,7 +10,7 @@ const videoRef = ref(null)
 const gesprekPlaying = ref(false)
 let currentGesprekSource = null
 
-const videoSrc = computed(() => import.meta.env.BASE_URL + 'assets/video/boef-live.mp4')
+const videoSrc = computed(() => audio.videoUrl.value)
 
 onMounted(() => {
   playGesprek()

@@ -12,6 +12,8 @@ const AUDIO_FILES = {
   boefGesprek: 'assets/audio/boef-gesprek.mp3'
 }
 
+const VIDEO_FILE = 'assets/video/boef-live.mp4'
+
 function createNoiseBuffer(ctx, seconds) {
   const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * seconds), ctx.sampleRate)
   const data = buffer.getChannelData(0)
@@ -23,6 +25,7 @@ function createNoiseBuffer(ctx, seconds) {
 
 export function useAudioEngine() {
   const ready = ref(false)
+  const videoUrl = ref(null)
   let ctx = null
   const buffers = {}
   let noiseBuffer = null
@@ -37,13 +40,24 @@ export function useAudioEngine() {
     if (ctx) return
     ctx = new (window.AudioContext || window.webkitAudioContext)()
     await ctx.resume()
-    await Promise.all(
-      Object.entries(AUDIO_FILES).map(async ([key, path]) => {
+    await Promise.all([
+      ...Object.entries(AUDIO_FILES).map(async ([key, path]) => {
         const res = await fetch(import.meta.env.BASE_URL + path)
         const arrayBuffer = await res.arrayBuffer()
         buffers[key] = await ctx.decodeAudioData(arrayBuffer)
-      })
-    )
+      }),
+      // De <video>-tag doet zelf HTTP range-requests (voor seeken); de
+      // service worker precachet het bestand wel, maar geeft geen
+      // 206-Partial-Content-antwoorden. Offline (vliegtuigmodus) faalt
+      // Safari daardoor stil op het afspelen. Door de video hier in zijn
+      // geheel op te halen (zoals de audio) en als blob-URL te gebruiken,
+      // komt er nooit een range-request aan te pas.
+      fetch(import.meta.env.BASE_URL + VIDEO_FILE)
+        .then((res) => res.blob())
+        .then((blob) => {
+          videoUrl.value = URL.createObjectURL(blob)
+        })
+    ])
     noiseBuffer = createNoiseBuffer(ctx, 2)
     ready.value = true
   }
@@ -178,6 +192,7 @@ export function useAudioEngine() {
 
   return {
     ready,
+    videoUrl,
     unlock,
     play,
     playAndWait,
