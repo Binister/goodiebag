@@ -18,7 +18,8 @@ const wakeLock = useWakeLock()
 const state = reactive({
   screen: 0,
   scannerArmed: true,
-  agentCount: 0
+  agentCount: 0,
+  starting: false
 })
 
 const direction = ref('forward')
@@ -52,10 +53,19 @@ function registerAgent() {
 }
 
 async function handleStart() {
-  await audio.unlock()
-  await wakeLock.request()
-  audio.play('welkom')
-  goNext()
+  // Het laden en decoderen van alle assets duurt even; een tweede tik
+  // op Aanmelden mag niet nóg een keer door de flow heen (dat schoot
+  // eerder twee schermen vooruit).
+  if (state.starting || state.screen !== 0) return
+  state.starting = true
+  try {
+    await audio.unlock()
+    await wakeLock.request()
+    audio.play('welkom')
+    goNext()
+  } finally {
+    state.starting = false
+  }
 }
 
 const flow = { state, goNext, goPrev, reset, armScanner, disarmScanner, registerAgent, handleStart }

@@ -36,15 +36,37 @@ export function useAudioEngine() {
   // boef-fragmenten) lopen hier bewust buitenom.
   let currentVoiceSource = null
 
-  async function unlock() {
-    if (ctx) return
+  let unlockPromise = null
+
+  function unlock() {
+    // Eén gedeelde unlock-belofte: een tweede tik op Aanmelden (terwijl de
+    // assets nog laden) wacht op dezelfde lading i.p.v. half-klaar door te
+    // schieten. Mislukt de unlock echt, dan mag een nieuwe tik het opnieuw
+    // proberen.
+    if (!unlockPromise) {
+      unlockPromise = doUnlock().catch((err) => {
+        unlockPromise = null
+        throw err
+      })
+    }
+    return unlockPromise
+  }
+
+  async function doUnlock() {
     ctx = new (window.AudioContext || window.webkitAudioContext)()
     await ctx.resume()
+    // Elk asset apart afvangen: één ontbrekend of corrupt bestand mag de
+    // rest van de ervaring niet blokkeren (play() van een ontbrekende
+    // buffer is verderop al een stille no-op).
     await Promise.all([
       ...Object.entries(AUDIO_FILES).map(async ([key, path]) => {
-        const res = await fetch(import.meta.env.BASE_URL + path)
-        const arrayBuffer = await res.arrayBuffer()
-        buffers[key] = await ctx.decodeAudioData(arrayBuffer)
+        try {
+          const res = await fetch(import.meta.env.BASE_URL + path)
+          const arrayBuffer = await res.arrayBuffer()
+          buffers[key] = await ctx.decodeAudioData(arrayBuffer)
+        } catch {
+          // asset ontbreekt - stil doorgaan met wat er wel is
+        }
       }),
       // De <video>-tag doet zelf HTTP range-requests (voor seeken); de
       // service worker precachet het bestand wel, maar geeft geen
@@ -57,10 +79,25 @@ export function useAudioEngine() {
         .then((blob) => {
           videoUrl.value = URL.createObjectURL(blob)
         })
+        .catch(() => {})
     ])
     noiseBuffer = createNoiseBuffer(ctx, 2)
     ready.value = true
   }
+
+  // iOS schort de AudioContext op bij een telefoontje, notificatie, Siri of
+  // app-wissel en hervat 'm daarna NIET vanzelf - de app zou dan stil
+  // blijven terwijl alle instructies via audio lopen. Bij terugkeren naar
+  // de app en bij elke aanraking checken we dat en hervatten we zo nodig.
+  function ensureRunning() {
+    if (ctx && ctx.state !== 'running') {
+      ctx.resume().catch(() => {})
+    }
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') ensureRunning()
+  })
+  document.addEventListener('pointerdown', ensureRunning, true)
 
   function stopCurrentVoice() {
     if (currentVoiceSource) {
