@@ -21,9 +21,18 @@ function focusInput() {
 }
 
 function onInput(e) {
+  const prevLength = digits.value.length
   const raw = e.target.value.replace(/\D/g, '').slice(0, PIN_LENGTH)
   digits.value = raw
   e.target.value = raw
+  if (raw.length > prevLength && raw.length < PIN_LENGTH) {
+    // Toetstoon per ingevoerd cijfer, licht oplopend zodat je de reeks
+    // hoort vollopen. Niet bij het zesde cijfer: daar volgt direct de
+    // zoemer of het succes-geluid en die mogen niet botsen.
+    audio.beep(520 + raw.length * 60, 0.06)
+  } else if (raw.length < prevLength) {
+    audio.beep(300, 0.05)
+  }
   if (raw.length === PIN_LENGTH) {
     checkPincode()
   }

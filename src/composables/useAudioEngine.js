@@ -174,6 +174,23 @@ export function useAudioEngine() {
     }
   }
 
+  // Kort, zacht mechanisch klikje voor het draaien aan de frequentie-dial
+  // (het gevoel van een analoge radio). Bewust stiller en korter dan
+  // beep(): dit vuurt tijdens het schuiven vaak achter elkaar en moet
+  // ónder de ruisloop blijven hangen, niet erbovenuit komen.
+  function playDialTick() {
+    if (!ctx) return
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+    osc.type = 'square'
+    osc.frequency.value = 2200
+    gain.gain.setValueAtTime(0.06, ctx.currentTime)
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.025)
+    osc.connect(gain).connect(ctx.destination)
+    osc.start()
+    osc.stop(ctx.currentTime + 0.03)
+  }
+
   function playTransitionSweep(direction = 'forward') {
     if (!ctx) return
     // De swoosh is puur decoratief: als er al een stem/instructie bezig
@@ -238,6 +255,7 @@ export function useAudioEngine() {
     stopAll,
     beep,
     playAscendingBeeps,
+    playDialTick,
     playTransitionSweep,
     playNoiseLoop,
     playBoefLoop

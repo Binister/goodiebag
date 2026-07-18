@@ -108,6 +108,17 @@ watch(isInZone, (nowInZone) => {
   else exitZone()
 })
 
+// Elke gepasseerde schaalstreep geeft een klikje (analoge-radio-gevoel).
+// De schaal 0-1000 beslaat 20 frequentiestappen, dus één streep per 50
+// slider-eenheden. Maximaal één klikje per beweging, ook als er snel
+// meerdere strepen tegelijk gepasseerd worden.
+watch(value, (newVal, oldVal) => {
+  if (!ready.value || locked.value) return
+  if (Math.floor(newVal / 50) !== Math.floor(oldVal / 50)) {
+    audio.playDialTick()
+  }
+})
+
 function lockSignal() {
   locked.value = true
   noiseLoop?.setGain(0, 0.1)
