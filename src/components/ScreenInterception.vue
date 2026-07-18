@@ -40,12 +40,23 @@ function replayGesprek() {
   playGesprek()
 }
 
-function startHack() {
+async function startHack() {
   phase.value = 'B'
   audio.play('hack')
-  setTimeout(async () => {
+  await nextTick()
+  // Meteen (nog binnen deze klik-gesture) een keer starten en direct weer
+  // pauzeren: Safari staat het latere, asynchrone afspelen met geluid
+  // alleen betrouwbaar toe als het video-element al eens via een
+  // user-gesture is gestart.
+  try {
+    await videoRef.value?.play()
+    videoRef.value?.pause()
+  } catch {
+    // Priming mislukt: de echte afspeelpoging hieronder wordt alsnog geprobeerd.
+  }
+  setTimeout(() => {
     showVideo.value = true
-    await nextTick()
+    if (videoRef.value) videoRef.value.currentTime = 0
     videoRef.value?.play()
   }, 2000)
 }
@@ -81,7 +92,7 @@ function replayVideo() {
     </template>
     <template v-else>
       <h1 v-if="!showVideo" class="screen-title">Verbinding maken met camera...</h1>
-      <div v-else class="video-wrap">
+      <div class="video-wrap" v-show="showVideo">
         <video ref="videoRef" :src="videoSrc" playsinline @ended="onVideoEnded"></video>
         <div class="overlay">
           <div class="rec-dot"><span class="dot"></span> LIVE</div>
